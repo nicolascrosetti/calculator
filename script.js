@@ -11,6 +11,9 @@ const multiply = (a,b) => {
 }
 
 const divide = (a,b) => {
+    if (b == 0){
+        return "Math error";
+    }
     return a/b;
 }
 
@@ -51,17 +54,30 @@ btnNumbers.forEach(number => {
 
 btnOperators.forEach(operator => {
     operator.addEventListener('click', () =>{
-        firstNumber = parseInt(display.value);
-        operatorSign = operator.textContent;
-        display.value = '';
+        if (operatorSign == ''){
+            firstNumber = parseInt(display.value);
+            operatorSign = operator.textContent;
+            display.value = '';
+        }else{
+            secondNumber = parseInt(display.value);
+            display.value = Math.floor((operate(operatorSign, firstNumber, secondNumber)) * 100) / 100;
+            firstNumber = parseInt(display.value);
+            operatorSign = operator.textContent;
+            display.value = '';
+        }
     });
 });
 
 btnEqual.addEventListener('click', () => {
-    secondNumber = parseInt(display.value);
-    display.value = operate(operatorSign, firstNumber, secondNumber);
+    if(operatorSign != ''){
+        secondNumber = parseInt(display.value);
+        display.value = Math.floor((operate(operatorSign, firstNumber, secondNumber)) * 100) / 100;
+    }
 });
 
 btnClear.addEventListener('click', () => {
     display.value = '';
+    firstNumber = 0;
+    secondNumber = 0;
+    operatorSign = '';
 });
