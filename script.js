@@ -37,17 +37,29 @@ const operate = (operator,a,b) => {
     return result;
 }
 
+const clearDisplay = () => {
+    display.value = '';
+    firstNumber = 0;
+    secondNumber = 0;
+    operatorSign = '';
+}
+
 const btnNumbers = document.querySelectorAll(".btn-number");
 const btnOperators = document.querySelectorAll(".btn-operator");
 const btnEqual = document.querySelector('#btn-equal'); 
 const btnClear = document.querySelector('#btn-clear');
 const display = document.querySelector("#display");
+let operationEnded = false;
 let firstNumber = 0;
 let secondNumber = 0;
 let operatorSign = '';
 
 btnNumbers.forEach(number => {
     number.addEventListener('click', () =>{
+        if(operationEnded){
+            clearDisplay();
+            operationEnded = false;
+        }
         display.value += number.textContent;
     });
 });
@@ -72,12 +84,10 @@ btnEqual.addEventListener('click', () => {
     if(operatorSign != ''){
         secondNumber = parseInt(display.value);
         display.value = Math.floor((operate(operatorSign, firstNumber, secondNumber)) * 100) / 100;
+        operationEnded = true;
     }
 });
 
 btnClear.addEventListener('click', () => {
-    display.value = '';
-    firstNumber = 0;
-    secondNumber = 0;
-    operatorSign = '';
+    clearDisplay();
 });
